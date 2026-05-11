@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Profile</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+}
+
+.navbar{
+    width:100%;
+    height:70px;
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    box-shadow:
+    0 2px 10px rgba(0,0,0,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:700;
+    color:#5f4bdb;
+}
+
+.nav-right{
+    display:flex;
+    gap:15px;
+}
+
+.nav-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    background:#5f4bdb;
+    color:white;
+    cursor:pointer;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-btn:hover{
+    transform:translateY(-2px);
+}
+
+.profile-container{
+    max-width:1000px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.profile-card{
+    background:white;
+    border-radius:24px;
+    padding:40px;
+    display:flex;
+    gap:40px;
+    align-items:center;
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,0.06);
+}
+
+.profile-pic{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #5f4bdb;
+}
+
+.profile-info{
+    flex:1;
+}
+
+.profile-top{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.username{
+    font-size:28px;
+    font-weight:600;
+    color:#222;
+}
+
+.edit-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    background:#5f4bdb;
+    color:white;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.stats{
+    display:flex;
+    gap:30px;
+    margin-bottom:20px;
+}
+
+.stat{
+    font-size:16px;
+    color:#333;
+}
+
+.stat span{
+    font-weight:700;
+}
+
+.fullname{
+    font-size:20px;
+    font-weight:600;
+    color:#222;
+    margin-bottom:10px;
+}
+
+.bio{
+    color:#666;
+    line-height:1.6;
+}
+
+.posts-section{
+    margin-top:40px;
+}
+
+.posts-title{
+    font-size:24px;
+    font-weight:700;
+    color:#333;
+    margin-bottom:25px;
+}
+
+.posts-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(280px,1fr));
+    gap:25px;
+}
+
+.post-card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,0.06);
+
+    transition:0.3s;
+}
+
+.post-card:hover{
+    transform:translateY(-4px);
+}
+
+.post-image{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+}
+
+.post-content{
+    padding:18px;
+}
+
+.caption{
+    color:#444;
+    line-height:1.6;
+}
+
+.empty-posts{
+    text-align:center;
+    margin-top:60px;
+    color:#888;
+}
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    z-index:1000;
+}
+
+.modal-content{
+    background:white;
+    width:400px;
+    padding:30px;
+    border-radius:20px;
+}
+
+.modal-title{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:20px;
+    color:#333;
+}
+
+.modal-input{
+    width:100%;
+    padding:12px;
+    margin-bottom:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+}
+
+.modal-textarea{
+    width:100%;
+    height:90px;
+    padding:12px;
+    margin-bottom:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    resize:none;
+    outline:none;
+}
+
+.modal-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.save-btn{
+    background:#5f4bdb;
+    color:white;
+}
+
+.cancel-btn{
+    background:#eee;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        CoolChat
+    </div>
+
+    <div class="nav-right">
+
+        <button
+            class="nav-btn"
+            onclick="goHome()"
+        >
+            Home
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        <img
+            id="profilePic"
+            class="profile-pic"
+            src=""
+        >
+
+        <div class="profile-info">
+
+            <div class="profile-top">
+
+                <div
+                    id="username"
+                    class="username"
+                >
+                    username
+                </div>
+
+                <button
+                    class="edit-btn"
+                    onclick="openEditModal()"
+                >
+                    Edit Profile
+                </button>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <span id="postCount">
+                        0
+                    </span>
+
+                    posts
+
+                </div>
+
+                <div class="stat">
+
+                    <span id="followers">
+                        0
+                    </span>
+
+                    followers
+
+                </div>
+
+                <div class="stat">
+
+                    <span id="following">
+                        0
+                    </span>
+
+                    following
+
+                </div>
+
+            </div>
+
+            <div
+                id="fullname"
+                class="fullname"
+            >
+                Full Name
+            </div>
+
+            <div
+                id="bio"
+                class="bio"
+            >
+                Bio
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="posts-section">
+
+        <div class="posts-title">
+            Your Posts
+        </div>
+
+        <div
+            id="postsGrid"
+            class="posts-grid"
+        ></div>
+
+    </div>
+
+</div>
+
+<div
+    id="editModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-title">
+            Edit Profile
+        </div>
+
+        <input
+            type="text"
+            id="editFullname"
+            class="modal-input"
+            placeholder="Full Name"
+        >
+
+        <textarea
+            id="editBio"
+            class="modal-textarea"
+            placeholder="Bio"
+        ></textarea>
+
+        <input
+            type="file"
+            id="editProfilePic"
+            class="modal-input"
+        >
+
+        <button
+            class="modal-btn save-btn"
+            onclick="saveProfile()"
+        >
+            Save Changes
+        </button>
+
+        <button
+            class="modal-btn cancel-btn"
+            onclick="closeEditModal()"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const currentUser = JSON.parse(
+    localStorage.getItem("user")
+)
+
+if(!currentUser){
+
+    window.location.href =
+        "login.html"
+}
+
+document.getElementById(
+    "username"
+).innerText =
+    currentUser.username
+
+document.getElementById(
+    "fullname"
+).innerText =
+    currentUser.fullname
+
+document.getElementById(
+    "bio"
+).innerText =
+    currentUser.bio || "No bio yet ✨"
+
+document.getElementById(
+    "profilePic"
+).src =
+    currentUser.profpicurl ||
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+
+async function loadUserPosts(){
+
+    try{
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/posts"
+        )
+
+        const data =
+            await response.json()
+
+        const postsGrid =
+            document.getElementById(
+                "postsGrid"
+            )
+
+        postsGrid.innerHTML = ""
+
+        const userPosts =
+            data.posts.filter(post => {
+
+                return (
+                    post.userid ===
+                    currentUser.userid
+                )
+            })
+
+        document.getElementById(
+            "postCount"
+        ).innerText =
+            userPosts.length
+
+        if(userPosts.length === 0){
+
+            postsGrid.innerHTML = `
+                <div class="empty-posts">
+                    No posts yet 🚀
+                </div>
+            `
+
+            return
+        }
+
+        userPosts.forEach(post => {
+
+            postsGrid.innerHTML += `
+
+                <div class="post-card">
+
+                    <img
+                        src="${post.imageurl}"
+                        class="post-image"
+                    >
+
+                    <div class="post-content">
+
+                        <div class="caption">
+                            ${post.caption}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `
+        })
+
+    }catch(error){
+
+        console.log(error)
+    }
+}
+
+function openEditModal(){
+
+    document.getElementById(
+        "editModal"
+    ).style.display = "flex"
+
+    document.getElementById(
+        "editFullname"
+    ).value =
+        currentUser.fullname || ""
+
+    document.getElementById(
+        "editBio"
+    ).value =
+        currentUser.bio || ""
+}
+
+function closeEditModal(){
+
+    document.getElementById(
+        "editModal"
+    ).style.display = "none"
+}
+
+async function saveProfile(){
+
+    try{
+
+        let profpicurl =
+            currentUser.profpicurl
+
+        const profilePicFile =
+            document.getElementById(
+                "editProfilePic"
+            ).files[0]
+
+        if(profilePicFile){
+
+            const formData =
+                new FormData()
+
+            formData.append(
+                "image",
+                profilePicFile
+            )
+
+            const uploadResponse =
+                await fetch(
+                    "http://127.0.0.1:5000/upload-image",
+                    {
+                        method:"POST",
+                        body:formData
+                    }
+                )
+
+            const uploadData =
+                await uploadResponse.json()
+
+            if(uploadData.success){
+
+                profpicurl =
+                    uploadData.imageurl
+            }
+        }
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/update-profile",
+            {
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    userid:
+                    currentUser.userid,
+
+                    fullname:
+                    document.getElementById(
+                        "editFullname"
+                    ).value,
+
+                    bio:
+                    document.getElementById(
+                        "editBio"
+                    ).value,
+
+                    profpicurl
+                })
+            }
+        )
+
+        const data =
+            await response.json()
+
+        if(data.success){
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(data.user)
+            )
+
+            alert(
+                "Profile updated successfully 🚀"
+            )
+
+            location.reload()
+        }
+
+    }catch(error){
+
+        console.log(error)
+
+        alert(
+            "Failed to update profile"
+        )
+    }
+}
+
+function logout(){
+
+    localStorage.removeItem(
+        "user"
+    )
+
+    window.location.href =
+        "login.html"
+}
+
+function goHome(){
+
+    window.location.href =
+        "home.html"
+}
+
+loadUserPosts()
+
+</script>
+
+</body>
+</html>

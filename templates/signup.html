@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Signup</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #5b86e5,
+        #7f53ac,
+        #6b8cff
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.background-circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:0.5;
+}
+
+.circle1{
+    width:320px;
+    height:320px;
+    background:#ffffff55;
+    top:-100px;
+    left:-80px;
+}
+
+.circle2{
+    width:260px;
+    height:260px;
+    background:#ffffff33;
+    bottom:-80px;
+    right:-60px;
+}
+
+.container{
+    width:400px;
+    position:relative;
+    z-index:10;
+}
+
+.signup-card{
+
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    border-radius:24px;
+
+    padding:42px 35px;
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.2);
+
+    color:white;
+}
+
+.logo{
+    text-align:center;
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.tagline{
+    text-align:center;
+    font-size:14px;
+    color:#ececec;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:16px;
+}
+
+.input-box{
+    width:100%;
+    padding:14px 16px;
+    border:none;
+    border-radius:14px;
+    outline:none;
+    background:rgba(255,255,255,0.18);
+    color:white;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.input-box::placeholder{
+    color:#eeeeee;
+}
+
+.input-box:focus{
+    background:rgba(255,255,255,0.25);
+    transform:scale(1.02);
+}
+
+.signup-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:white;
+    color:#6549d5;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px;
+    transition:0.3s;
+}
+
+.signup-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 20px rgba(0,0,0,0.2);
+}
+
+.bottom-text{
+    margin-top:22px;
+    text-align:center;
+    font-size:14px;
+    color:#f3f3f3;
+}
+
+.bottom-text a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.message{
+    margin-top:18px;
+    text-align:center;
+    font-size:14px;
+}
+
+.success{
+    color:#8cffc1;
+}
+
+.error{
+    color:#ffd4d4;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background-circle circle1"></div>
+<div class="background-circle circle2"></div>
+
+<div class="container">
+
+    <div class="signup-card">
+
+        <div class="logo">
+            CoolChat
+        </div>
+
+        <div class="tagline">
+            Create your vibe ✨
+        </div>
+
+        <form id="signupForm">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="fullname"
+                    class="input-box"
+                    placeholder="Full Name"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="username"
+                    class="input-box"
+                    placeholder="Username"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="email"
+                    id="email"
+                    class="input-box"
+                    placeholder="Email"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    class="input-box"
+                    placeholder="Password"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="signup-btn"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+        <div class="bottom-text">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const signupForm =
+    document.getElementById("signupForm")
+
+const messageDiv =
+    document.getElementById("message")
+
+signupForm.addEventListener(
+    "submit",
+    async function(e){
+
+        e.preventDefault()
+
+        const fullname =
+            document.getElementById(
+                "fullname"
+            ).value
+
+        const username =
+            document.getElementById(
+                "username"
+            ).value
+
+        const email =
+            document.getElementById(
+                "email"
+            ).value
+
+        const password =
+            document.getElementById(
+                "password"
+            ).value
+
+        try{
+
+            const response = await fetch(
+                "http://127.0.0.1:5000/signup",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+
+                    body:JSON.stringify({
+                        fullname,
+                        username,
+                        email,
+                        password
+                    })
+                }
+            )
+
+            const data =
+                await response.json()
+
+            if(data.success){
+
+                messageDiv.className =
+                    "message success"
+
+                messageDiv.innerText =
+                    "Account created successfully 🚀"
+
+                signupForm.reset()
+
+            }else{
+
+                messageDiv.className =
+                    "message error"
+
+                messageDiv.innerText =
+                    data.message
+            }
+
+        }catch(error){
+
+            messageDiv.className =
+                "message error"
+
+            messageDiv.innerText =
+                "Server error"
+        }
+    }
+)
+
+</script>
+
+</body>
+</html>
