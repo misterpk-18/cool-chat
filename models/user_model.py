@@ -171,6 +171,7 @@ class UserModel:
     @staticmethod
     def update_profile(
         userid,
+        username,
         fullname,
         bio,
         profpicurl
@@ -185,12 +186,14 @@ class UserModel:
         cursor.execute("""
             UPDATE users
             SET
+                username=%s,
                 fullname=%s,
                 bio=%s,
                 profpicurl=%s
             WHERE userid=%s
             RETURNING *
         """,(
+            username,
             fullname,
             bio,
             profpicurl,

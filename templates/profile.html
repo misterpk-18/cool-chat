@@ -408,6 +408,13 @@ body{
 
         <input
             type="text"
+            id="editUsername"
+            class="modal-input"
+            placeholder="Username"
+        >
+
+        <input
+            type="text"
             id="editFullname"
             class="modal-input"
             placeholder="Full Name"
@@ -556,6 +563,11 @@ function openEditModal(){
     ).style.display = "flex"
 
     document.getElementById(
+        "editUsername"
+    ).value =
+        currentUser.username || ""
+
+    document.getElementById(
         "editFullname"
     ).value =
         currentUser.fullname || ""
@@ -628,6 +640,11 @@ async function saveProfile(){
                     userid:
                     currentUser.userid,
 
+                    username:
+                    document.getElementById(
+                        "editUsername"
+                    ).value.trim(),
+
                     fullname:
                     document.getElementById(
                         "editFullname"
@@ -658,6 +675,12 @@ async function saveProfile(){
             )
 
             location.reload()
+        }else{
+
+            alert(
+                data.message ||
+                "Failed to update profile"
+            )
         }
 
     }catch(error){
