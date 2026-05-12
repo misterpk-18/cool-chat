@@ -27,7 +27,25 @@ from routes.upload_routes import upload_bp
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(
+    app,
+    resources={
+        r"/*":{
+            "origins":"*",
+            "methods":[
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+            ],
+            "allow_headers":[
+                "Content-Type",
+                "Authorization"
+            ]
+        }
+    }
+)
 
 
 app.register_blueprint(auth_bp)

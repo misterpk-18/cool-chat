@@ -320,6 +320,7 @@ body{
                 </div>
 
                 <button
+                    id="editProfileBtn"
                     class="edit-btn"
                     onclick="openEditModal()"
                 >
@@ -382,7 +383,10 @@ body{
 
     <div class="posts-section">
 
-        <div class="posts-title">
+        <div
+            id="postsSectionTitle"
+            class="posts-title"
+        >
             Your Posts
         </div>
 
@@ -462,33 +466,136 @@ if(!currentUser){
         "login.html"
 }
 
-document.getElementById(
-    "username"
-).innerText =
-    currentUser.username
+const API_BASE =
+    "http://" +
+    window.location.hostname +
+    ":5000"
 
-document.getElementById(
-    "fullname"
-).innerText =
-    currentUser.fullname
+const viewerId =
+    currentUser.userid ||
+    currentUser.userId
 
-document.getElementById(
-    "bio"
-).innerText =
-    currentUser.bio || "No bio yet ✨"
+const profileParams =
+    new URLSearchParams(
+        window.location.search
+    )
 
-document.getElementById(
-    "profilePic"
-).src =
-    currentUser.profpicurl ||
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+const profileUserIdParam =
+    profileParams.get("userid")
+
+let profileUser =
+    currentUser
+
+let viewingOther =
+    false
+
+function applyProfileToPage(){
+
+    document.getElementById(
+        "username"
+    ).innerText =
+        profileUser.username
+
+    document.getElementById(
+        "fullname"
+    ).innerText =
+        profileUser.fullname
+
+    document.getElementById(
+        "bio"
+    ).innerText =
+        profileUser.bio ||
+        "No bio yet ✨"
+
+    document.getElementById(
+        "profilePic"
+    ).src =
+        profileUser.profpicurl ||
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+}
+
+async function initProfile(){
+
+    if(profileUserIdParam){
+
+        if(
+            String(profileUserIdParam) !==
+            String(viewerId)
+        ){
+
+            viewingOther =
+                true
+
+            try{
+
+                const response =
+                    await fetch(
+                        API_BASE +
+                        "/user/" +
+                        encodeURIComponent(
+                            profileUserIdParam
+                        )
+                    )
+
+                const data =
+                    await response.json()
+
+                if(!data.success){
+
+                    alert(
+                        data.message ||
+                        "Could not load profile"
+                    )
+
+                    window.location.href =
+                        "home.html"
+
+                    return
+                }
+
+                profileUser =
+                    data.user
+
+            }catch(error){
+
+                console.log(error)
+
+                alert(
+                    "Could not load profile"
+                )
+
+                window.location.href =
+                    "home.html"
+
+                return
+            }
+        }
+    }
+
+    applyProfileToPage()
+
+    if(viewingOther){
+
+        document.getElementById(
+            "editProfileBtn"
+        ).style.display =
+            "none"
+
+        document.getElementById(
+            "postsSectionTitle"
+        ).innerText =
+            "Posts"
+    }
+
+    await loadUserPosts()
+}
 
 async function loadUserPosts(){
 
     try{
 
         const response = await fetch(
-            "http://127.0.0.1:5000/posts"
+            API_BASE + "/posts"
         )
 
         const data =
@@ -506,7 +613,7 @@ async function loadUserPosts(){
 
                 return (
                     post.userid ===
-                    currentUser.userid
+                    profileUser.userid
                 )
             })
 
@@ -609,7 +716,7 @@ async function saveProfile(){
 
             const uploadResponse =
                 await fetch(
-                    "http://127.0.0.1:5000/upload-image",
+                    API_BASE + "/upload-image",
                     {
                         method:"POST",
                         body:formData
@@ -627,7 +734,7 @@ async function saveProfile(){
         }
 
         const response = await fetch(
-            "http://127.0.0.1:5000/update-profile",
+            API_BASE + "/update-profile",
             {
                 method:"PUT",
 
@@ -638,7 +745,7 @@ async function saveProfile(){
                 body:JSON.stringify({
 
                     userid:
-                    currentUser.userid,
+                    viewerId,
 
                     username:
                     document.getElementById(
@@ -709,7 +816,7 @@ function goHome(){
         "home.html"
 }
 
-loadUserPosts()
+initProfile()
 
 </script>
 

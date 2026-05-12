@@ -71,6 +71,49 @@ class PostModel:
         return posts
 
     @staticmethod
+    def get_all_posts_with_engagement(
+        viewer_userid
+    ):
+
+        conn = get_connection()
+
+        cursor = conn.cursor(
+            cursor_factory=psycopg2.extras.RealDictCursor
+        )
+
+        cursor.execute("""
+            SELECT
+                p.*,
+                (
+                    SELECT COUNT(*)::int
+                    FROM likes l
+                    WHERE l.postid = p.postid
+                ) AS like_count,
+                (
+                    SELECT COUNT(*)::int
+                    FROM comments c
+                    WHERE c.postid = p.postid
+                ) AS comment_count,
+                EXISTS(
+                    SELECT 1
+                    FROM likes l
+                    WHERE l.postid = p.postid
+                    AND l.userid = %s
+                ) AS liked
+            FROM posts p
+            ORDER BY p.createdat DESC
+        """,(
+            viewer_userid,
+        ))
+
+        posts = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return posts
+
+    @staticmethod
     def delete_post(postid):
 
         conn = get_connection()

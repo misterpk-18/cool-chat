@@ -72,6 +72,9 @@ CREATE TABLE comments(
     commtxt TEXT
     NOT NULL,
 
+    parent_comid VARCHAR(255)
+    DEFAULT NULL,
+
     createdat TIMESTAMP
     DEFAULT CURRENT_TIMESTAMP,
 
@@ -83,8 +86,17 @@ CREATE TABLE comments(
     CONSTRAINT fk_comments_user
     FOREIGN KEY(userid)
     REFERENCES users(userid)
+    ON DELETE CASCADE,
+
+    CONSTRAINT fk_comments_parent
+    FOREIGN KEY(parent_comid)
+    REFERENCES comments(comid)
     ON DELETE CASCADE
 );
+
+-- If you already have a comments table without parent_comid, run:
+-- ALTER TABLE comments ADD COLUMN parent_comid VARCHAR(255) DEFAULT NULL;
+-- ALTER TABLE comments ADD CONSTRAINT fk_comments_parent FOREIGN KEY (parent_comid) REFERENCES comments(comid) ON DELETE CASCADE;
 
 
 CREATE TABLE likes(

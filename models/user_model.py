@@ -83,6 +83,78 @@ class UserModel:
         return user
 
     @staticmethod
+    def search_users_by_name(
+        query,
+        limit=20
+    ):
+
+        q = (query or "").strip()
+
+        if not q:
+
+            return []
+
+        conn = get_connection()
+
+        cursor = conn.cursor(
+            cursor_factory=psycopg2.extras.RealDictCursor
+        )
+
+        pattern = f"%{q}%"
+
+        cursor.execute("""
+            SELECT
+                userid,
+                username,
+                fullname,
+                bio,
+                profpicurl
+            FROM users
+            WHERE fullname ILIKE %s
+            OR username ILIKE %s
+            ORDER BY fullname ASC
+            LIMIT %s
+        """,(
+            pattern,
+            pattern,
+            limit
+        ))
+
+        rows = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return rows
+
+    @staticmethod
+    def get_public_profile_by_id(userid):
+
+        conn = get_connection()
+
+        cursor = conn.cursor(
+            cursor_factory=psycopg2.extras.RealDictCursor
+        )
+
+        cursor.execute("""
+            SELECT
+                userid,
+                username,
+                fullname,
+                bio,
+                profpicurl
+            FROM users
+            WHERE userid=%s
+        """,(userid,))
+
+        user = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return user
+
+    @staticmethod
     def get_user_by_username(username):
 
         conn = get_connection()

@@ -1,4 +1,4 @@
-from flask import request,jsonify
+from flask import request, jsonify
 from models.post_model import PostModel
 
 
@@ -53,7 +53,23 @@ class PostController:
 
         try:
 
-            posts = PostModel.get_all_posts()
+            viewer = (
+                request.args.get(
+                    "viewer_userid"
+                )
+            )
+
+            if viewer:
+
+                posts = (
+                    PostModel.get_all_posts_with_engagement(
+                        viewer
+                    )
+                )
+
+            else:
+
+                posts = PostModel.get_all_posts()
 
             return jsonify({
                 "success":True,

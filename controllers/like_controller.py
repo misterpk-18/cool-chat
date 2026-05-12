@@ -53,6 +53,18 @@ class LikeController:
             postid = data.get("postid")
             userid = data.get("userid")
 
+            if not postid:
+                return jsonify({
+                    "success":False,
+                    "message":"Postid required"
+                }),400
+
+            if not userid:
+                return jsonify({
+                    "success":False,
+                    "message":"Userid required"
+                }),400
+
             LikeModel.unlike_post(
                 postid,
                 userid

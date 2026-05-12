@@ -5,6 +5,56 @@ from models.user_model import UserModel
 class UserController:
 
     @staticmethod
+    def search_users():
+
+        q = request.args.get(
+            "q",
+            ""
+        ).strip()
+
+        if not q:
+
+            return jsonify({
+                "success":False,
+                "message":"Query is required"
+            }),400
+
+        users = UserModel.search_users_by_name(
+            q
+        )
+
+        return jsonify({
+            "success":True,
+            "users":users
+        }),200
+
+    @staticmethod
+    def get_public_profile(userid):
+
+        if not userid:
+
+            return jsonify({
+                "success":False,
+                "message":"userid is required"
+            }),400
+
+        user = UserModel.get_public_profile_by_id(
+            userid
+        )
+
+        if not user:
+
+            return jsonify({
+                "success":False,
+                "message":"User not found"
+            }),404
+
+        return jsonify({
+            "success":True,
+            "user":user
+        }),200
+
+    @staticmethod
     def update_profile():
 
         try:

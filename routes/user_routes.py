@@ -13,3 +13,17 @@ user_bp.route(
 )(
     UserController.update_profile
 )
+
+user_bp.route(
+    "/search-users",
+    methods=["GET"]
+)(
+    UserController.search_users
+)
+
+user_bp.route(
+    "/user/<userid>",
+    methods=["GET"]
+)(
+    UserController.get_public_profile
+)

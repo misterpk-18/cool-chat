@@ -14,6 +14,13 @@ class CommentController:
             postid = data.get("postid")
             userid = data.get("userid")
             commtxt = data.get("commtxt")
+            parent_comid = data.get(
+                "parent_comid"
+            )
+
+            if parent_comid == "":
+
+                parent_comid = None
 
             if not postid:
                 return jsonify({
@@ -33,11 +40,19 @@ class CommentController:
                     "message":"Comment text required"
                 }),400
 
-            comment = CommentModel.add_comment(
+            comment, err = CommentModel.add_comment(
                 postid,
                 userid,
-                commtxt
+                commtxt,
+                parent_comid
             )
+
+            if err:
+
+                return jsonify({
+                    "success":False,
+                    "message":err
+                }),400
 
             return jsonify({
                 "success":True,

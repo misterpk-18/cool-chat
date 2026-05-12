@@ -281,6 +281,11 @@ if(existingUser){
         "home.html"
 }
 
+const API_BASE =
+    "http://" +
+    window.location.hostname +
+    ":5000"
+
 const loginForm =
     document.getElementById("loginForm")
 
@@ -306,7 +311,7 @@ loginForm.addEventListener(
         try{
 
             const response = await fetch(
-                "http://127.0.0.1:5000/login",
+                API_BASE + "/login",
                 {
                     method:"POST",
 
