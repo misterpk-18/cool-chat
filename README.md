@@ -1,61 +1,61 @@
-# Cool Chat - REST APIs
+# 💬 CoolChat - REST APIs
 
-A Flask + PostgreSQL backend for a social app with authentication, posts, comments, likes, follows, profile updates, and image uploads.
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-2.x-lightgrey.svg)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)
 
-## Features
+A complete full-stack social media web application featuring a Python Flask backend and a vanilla HTML/CSS/JS frontend. It provides complete RESTful APIs for authentication, posts, nested comments, likes, follows, user profiles, and image uploads.
 
-- User signup and login
-- Create and fetch posts
-- Add and fetch comments
-- Like and unlike posts
-- Follow and unfollow users
-- Update user profile (`fullname`, `bio`, `profpicurl`)
-- Upload images
+---
 
-## Tech Stack
+## ✨ Features
 
-- Python
-- Flask
-- Flask-CORS
-- PostgreSQL
+- **Authentication**: Secure user signup, login, and session management.
+- **Posts**: Create, view, and delete multimedia posts (with image uploads).
+- **Engagement**: Like/unlike posts and nested commenting system.
+- **Social Graph**: Follow and unfollow users, search for users.
+- **Profiles**: Customizable user profiles with bio and profile picture URLs.
+- **Optimized Frontend**: Separated HTML, CSS, and JS architecture for better caching and performance.
 
-## Project Structure
+---
+
+## 🏗️ Project Structure
 
 ```text
-backend/          # Flask app entrypoint and Python dependencies
-controllers/      # Request handlers
-routes/           # API route declarations
-models/           # Database queries and data access logic
-services/         # Business logic helpers
-database/         # DB connection and SQL schema
-middleware/       # Middleware utilities
-templates/        # Frontend HTML pages
-config.py         # App/database config
+cool-chat/
+├── backend/            # Flask application entry point
+├── controllers/        # Request handlers and input validation
+├── routes/             # API routing declarations
+├── models/             # Database access and SQL queries
+├── services/           # Reusable business logic layer
+├── database/           # DB connections and schema dumps (`socialapp.sql`)
+├── middleware/         # Custom Flask middleware
+├── templates/          # Client-side frontend application
+│   ├── html/           # HTML views (home, login, signup, profile)
+│   ├── css/            # Stylesheets
+│   └── js/             # Client-side JavaScript
+├── config.py           # Application and database configuration
+└── requirements.txt    # Python dependencies (in backend/)
 ```
 
-## Prerequisites
+---
 
+## 🚀 Getting Started
+
+### Prerequisites
 - Python 3.10+
-- PostgreSQL installed and running
+- PostgreSQL installed and running locally
 - A PostgreSQL database named `socialapp`
 
-## Setup
+### 1. Database Setup
 
-1. Clone the repository and open it:
-
+Create the database and apply the initial schema:
 ```bash
-git clone https://github.com/misterpk-18/cool-chat.git
-cd cool-chat
+psql -U your_postgres_user -d postgres -c "CREATE DATABASE socialapp;"
+psql -U your_postgres_user -d socialapp -f database/socialapp.sql
 ```
 
-2. Install dependencies:
-
-```bash
-python3 -m pip install -r backend/requirements.txt
-```
-
-3. Configure database connection in `config.py`:
-
+Update your connection credentials in `config.py`:
 ```python
 DB_HOST = "localhost"
 DB_NAME = "socialapp"
@@ -64,60 +64,58 @@ DB_PASSWORD = "your_postgres_password"
 DB_PORT = "5432"
 ```
 
-4. Initialize database schema:
+### 2. Backend Setup
 
+Install the required Python dependencies:
 ```bash
-psql -U your_postgres_user -d socialapp -f database/socialapp.sql
+python3 -m pip install -r backend/requirements.txt
 ```
 
-## Run the Server
-
+Run the Flask server:
 ```bash
 python3 backend/app.py
 ```
+*The backend API will start on `http://127.0.0.1:5000`.*
 
-Server starts at:
+### 3. Frontend Setup
 
-`http://127.0.0.1:5000`
+To serve the frontend static files and prevent CORS/routing issues, run a local web server from the project root:
+```bash
+python3 -m http.server 5500
+```
+*You can now access the application at `http://127.0.0.1:5500/templates/html/login.html`.*
 
-## API Endpoints
+---
 
-### Auth
+## 📡 API Reference
 
-- `POST /signup`
-- `POST /login`
+### Authentication
+- `POST /signup` - Register a new user
+- `POST /login` - Authenticate an existing user
 
-### Posts
+### Posts & Feed
+- `GET /posts` - Retrieve the global feed
+- `POST /create-post` - Create a new post with a caption and image
+- `DELETE /delete-post/<postid>` - Delete a specific post
 
-- `GET /posts`
-- `POST /create-post`
-- `DELETE /delete-post/<postid>`
+### Comments & Likes
+- `POST /add-comment` - Comment on a post or reply to another comment
+- `GET /get-comments/<postid>` - Fetch all comments for a post
+- `POST /like-post` - Like a post
+- `DELETE /unlike-post` - Remove a like from a post
 
-### Comments
+### Social
+- `POST /follow-user` - Follow another user
+- `DELETE /unfollow-user` - Unfollow a user
+- `GET /search-users` - Search the user directory
 
-- `POST /add-comment`
-- `GET /get-comments/<postid>`
+### Profiles & Media
+- `PUT /update-profile` - Update profile details (bio, avatar, fullname)
+- `POST /upload-image` - Upload an image (returns a hosted URL)
 
-### Likes
+---
 
-- `POST /like-post`
-- `DELETE /unlike-post`
+## 🛡️ Notes & Best Practices
 
-### Follow
-
-- `POST /follow-user`
-- `DELETE /unfollow-user`
-
-### User
-
-- `PUT /update-profile`
-
-### Upload
-
-- `POST /upload-image`
-
-## Notes
-
-- CORS is enabled globally.
-- Current config is read from `config.py`.
-- Keep secrets out of git (use local environment configuration for production).
+- **CORS** is enabled globally for local development. Make sure to restrict origins before deploying to production.
+- **Environment Variables**: Sensitive data is currently read from `config.py`. For a production environment, it is highly recommended to migrate these to a `.env` file to keep secrets out of version control.
