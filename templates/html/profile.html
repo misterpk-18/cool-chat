@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Profile</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        CoolChat
+    </div>
+
+    <div class="nav-right">
+
+        <button
+            class="nav-btn"
+            onclick="goHome()"
+        >
+            Home
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        <img
+            id="profilePic"
+            class="profile-pic"
+            src=""
+        >
+
+        <div class="profile-info">
+
+            <div class="profile-top">
+
+                <div
+                    id="username"
+                    class="username"
+                >
+                    username
+                </div>
+
+                <button
+                    id="editProfileBtn"
+                    class="edit-btn"
+                    onclick="openEditModal()"
+                >
+                    Edit Profile
+                </button>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <span id="postCount">
+                        0
+                    </span>
+
+                    posts
+
+                </div>
+
+                <div class="stat">
+
+                    <span id="followers">
+                        0
+                    </span>
+
+                    followers
+
+                </div>
+
+                <div class="stat">
+
+                    <span id="following">
+                        0
+                    </span>
+
+                    following
+
+                </div>
+
+            </div>
+
+            <div
+                id="fullname"
+                class="fullname"
+            >
+                Full Name
+            </div>
+
+            <div
+                id="bio"
+                class="bio"
+            >
+                Bio
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="posts-section">
+
+        <div
+            id="postsSectionTitle"
+            class="posts-title"
+        >
+            Your Posts
+        </div>
+
+        <div
+            id="postsGrid"
+            class="posts-grid"
+        ></div>
+
+    </div>
+
+</div>
+
+<div
+    id="editModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-title">
+            Edit Profile
+        </div>
+
+        <input
+            type="text"
+            id="editUsername"
+            class="modal-input"
+            placeholder="Username"
+        >
+
+        <input
+            type="text"
+            id="editFullname"
+            class="modal-input"
+            placeholder="Full Name"
+        >
+
+        <textarea
+            id="editBio"
+            class="modal-textarea"
+            placeholder="Bio"
+        ></textarea>
+
+        <input
+            type="file"
+            id="editProfilePic"
+            class="modal-input"
+        >
+
+        <button
+            class="modal-btn save-btn"
+            onclick="saveProfile()"
+        >
+            Save Changes
+        </button>
+
+        <button
+            class="modal-btn cancel-btn"
+            onclick="closeEditModal()"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+<script src="../js/profile.js"></script>
+
+</body>
+</html>

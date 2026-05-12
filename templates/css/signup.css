@@ -1,0 +1,157 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #5b86e5,
+        #7f53ac,
+        #6b8cff
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.background-circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:0.5;
+}
+
+.circle1{
+    width:320px;
+    height:320px;
+    background:#ffffff55;
+    top:-100px;
+    left:-80px;
+}
+
+.circle2{
+    width:260px;
+    height:260px;
+    background:#ffffff33;
+    bottom:-80px;
+    right:-60px;
+}
+
+.container{
+    width:400px;
+    position:relative;
+    z-index:10;
+}
+
+.signup-card{
+
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    border-radius:24px;
+
+    padding:42px 35px;
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.2);
+
+    color:white;
+}
+
+.logo{
+    text-align:center;
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.tagline{
+    text-align:center;
+    font-size:14px;
+    color:#ececec;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:16px;
+}
+
+.input-box{
+    width:100%;
+    padding:14px 16px;
+    border:none;
+    border-radius:14px;
+    outline:none;
+    background:rgba(255,255,255,0.18);
+    color:white;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.input-box::placeholder{
+    color:#eeeeee;
+}
+
+.input-box:focus{
+    background:rgba(255,255,255,0.25);
+    transform:scale(1.02);
+}
+
+.signup-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:white;
+    color:#6549d5;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px;
+    transition:0.3s;
+}
+
+.signup-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 20px rgba(0,0,0,0.2);
+}
+
+.bottom-text{
+    margin-top:22px;
+    text-align:center;
+    font-size:14px;
+    color:#f3f3f3;
+}
+
+.bottom-text a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.message{
+    margin-top:18px;
+    text-align:center;
+    font-size:14px;
+}
+
+.success{
+    color:#8cffc1;
+}
+
+.error{
+    color:#ffd4d4;
+}

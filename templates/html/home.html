@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Feed</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/home.css">
+</head>
+
+<body>
+<div class="navbar">
+
+    <div class="logo">
+        CoolChat
+    </div>
+    <div class="search-container">
+        <input 
+            type="text" 
+            id="searchBox" 
+            class="search-input"
+            placeholder="Search here..."
+        >
+    
+        <button class="search-btn" onclick="searchData()">
+            Search
+        </button>
+    </div>
+    <div class="nav-right">
+
+        <div
+            id="welcomeText"
+            class="welcome-text"
+        ></div>
+
+        <button
+            class="nav-btn"
+            onclick="goToProfile()"
+        >
+            Profile
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+<div class="search-results-wrap">
+
+    <div
+        id="searchResultsCard"
+        class="search-results-card"
+    >
+
+        <div class="search-results-title">
+            Search results
+        </div>
+
+        <div id="searchResultsBody"></div>
+
+    </div>
+
+</div>
+
+<div class="feed-container">
+
+    <div class="create-post">
+
+        <div class="create-title">
+            Create Post ✨
+        </div>
+
+        <input
+            type="file"
+            id="imageFile"
+            class="file-input"
+            accept="image/*"
+        >
+
+        <img
+            id="previewImage"
+            class="preview-image"
+        >
+
+        <textarea
+            id="caption"
+            class="input-box textarea"
+            placeholder="Write a caption..."
+        ></textarea>
+
+        <button
+            class="post-btn"
+            onclick="createPost()"
+        >
+            Post
+        </button>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+    </div>
+
+    <div id="feed"></div>
+
+</div>
+
+<script src="../js/home.js"></script>
+
+</body>
+</html>

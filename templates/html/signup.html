@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Signup</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/signup.css">
+</head>
+
+<body>
+
+<div class="background-circle circle1"></div>
+<div class="background-circle circle2"></div>
+
+<div class="container">
+
+    <div class="signup-card">
+
+        <div class="logo">
+            CoolChat
+        </div>
+
+        <div class="tagline">
+            Create your vibe ✨
+        </div>
+
+        <form id="signupForm">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="fullname"
+                    class="input-box"
+                    placeholder="Full Name"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="username"
+                    class="input-box"
+                    placeholder="Username"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="email"
+                    id="email"
+                    class="input-box"
+                    placeholder="Email"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    class="input-box"
+                    placeholder="Password"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="signup-btn"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+        <div class="bottom-text">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="../js/signup.js"></script>
+
+</body>
+</html>

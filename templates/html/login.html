@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+<div class="background-circle circle1"></div>
+
+<div class="background-circle circle2"></div>
+
+<div class="container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            CoolChat
+        </div>
+
+        <div class="tagline">
+            Connect. Share. Chill.
+        </div>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="username_or_email"
+                    class="input-box"
+                    placeholder="Username or Email"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    class="input-box"
+                    placeholder="Password"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+        <div class="bottom-text">
+
+            Don't have an account?
+
+            <a href="signup.html">
+                Sign Up
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="../js/login.js"></script>
+
+</body>
+</html>
