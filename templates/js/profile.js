@@ -2,7 +2,7 @@ const currentUser = JSON.parse(
     localStorage.getItem("user")
 )
 
-if(!currentUser){
+if (!currentUser) {
 
     window.location.href =
         "login.html"
@@ -28,8 +28,15 @@ let profileUser =
 let viewingOther =
     false
 
-function applyProfileToPage(){
+let followeeid = profileUserIdParam || viewerId
 
+let isFollowing = false
+
+function applyProfileToPage() {
+    document.getElementById(
+        "followButtonContainer"
+    ).style.display =
+        viewingOther ? "block" : "none"
     document.getElementById(
         "username"
     ).innerText =
@@ -53,19 +60,19 @@ function applyProfileToPage(){
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
 }
 
-async function initProfile(){
+async function initProfile() {
 
-    if(profileUserIdParam){
+    if (profileUserIdParam) {
 
-        if(
+        if (
             String(profileUserIdParam) !==
             String(viewerId)
-        ){
+        ) {
 
             viewingOther =
                 true
 
-            try{
+            try {
 
                 const response =
                     await fetch(
@@ -79,7 +86,7 @@ async function initProfile(){
                 const data =
                     await response.json()
 
-                if(!data.success){
+                if (!data.success) {
 
                     alert(
                         data.message ||
@@ -95,7 +102,7 @@ async function initProfile(){
                 profileUser =
                     data.user
 
-            }catch(error){
+            } catch (error) {
 
                 console.log(error)
 
@@ -113,7 +120,7 @@ async function initProfile(){
 
     applyProfileToPage()
 
-    if(viewingOther){
+    if (viewingOther) {
 
         document.getElementById(
             "editProfileBtn"
@@ -127,16 +134,48 @@ async function initProfile(){
     }
 
     await loadUserPosts()
+
+    if (viewingOther) {
+        await checkFollowStatus()
+    }
 }
 
-async function loadUserPosts(){
+async function loadUserPosts() {
 
-    try{
+    try {
 
         const response = await fetch(
             API_BASE + "/posts"
         )
+        const follower_count_response = await fetch(
+            API_BASE + "/follower-count",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    followeeid: followeeid
+                })
+            }
+        )
 
+        const following_count_response = await fetch(
+            API_BASE + "/following-count",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    followerid: followeeid
+                })
+            }
+        )
+        const follower_data =
+            await follower_count_response.json()
+        const following_data =
+            await following_count_response.json()
         const data =
             await response.json()
 
@@ -155,13 +194,20 @@ async function loadUserPosts(){
                     profileUser.userid
                 )
             })
-
+        document.getElementById(
+            "followers"
+        ).innerText =
+            follower_data.count
+        document.getElementById(
+            "following"
+        ).innerText =
+            following_data.count
         document.getElementById(
             "postCount"
         ).innerText =
             userPosts.length
 
-        if(userPosts.length === 0){
+        if (userPosts.length === 0) {
 
             postsGrid.innerHTML = `
                 <div class="empty-posts">
@@ -196,13 +242,13 @@ async function loadUserPosts(){
             `
         })
 
-    }catch(error){
+    } catch (error) {
 
         console.log(error)
     }
 }
 
-function openEditModal(){
+function openEditModal() {
 
     document.getElementById(
         "editModal"
@@ -224,16 +270,16 @@ function openEditModal(){
         currentUser.bio || ""
 }
 
-function closeEditModal(){
+function closeEditModal() {
 
     document.getElementById(
         "editModal"
     ).style.display = "none"
 }
 
-async function saveProfile(){
+async function saveProfile() {
 
-    try{
+    try {
 
         let profpicurl =
             currentUser.profpicurl
@@ -243,7 +289,7 @@ async function saveProfile(){
                 "editProfilePic"
             ).files[0]
 
-        if(profilePicFile){
+        if (profilePicFile) {
 
             const formData =
                 new FormData()
@@ -257,15 +303,15 @@ async function saveProfile(){
                 await fetch(
                     API_BASE + "/upload-image",
                     {
-                        method:"POST",
-                        body:formData
+                        method: "POST",
+                        body: formData
                     }
                 )
 
             const uploadData =
                 await uploadResponse.json()
 
-            if(uploadData.success){
+            if (uploadData.success) {
 
                 profpicurl =
                     uploadData.imageurl
@@ -275,31 +321,31 @@ async function saveProfile(){
         const response = await fetch(
             API_BASE + "/update-profile",
             {
-                method:"PUT",
+                method: "PUT",
 
-                headers:{
-                    "Content-Type":"application/json"
+                headers: {
+                    "Content-Type": "application/json"
                 },
 
-                body:JSON.stringify({
+                body: JSON.stringify({
 
                     userid:
-                    viewerId,
+                        viewerId,
 
                     username:
-                    document.getElementById(
-                        "editUsername"
-                    ).value.trim(),
+                        document.getElementById(
+                            "editUsername"
+                        ).value.trim(),
 
                     fullname:
-                    document.getElementById(
-                        "editFullname"
-                    ).value,
+                        document.getElementById(
+                            "editFullname"
+                        ).value,
 
                     bio:
-                    document.getElementById(
-                        "editBio"
-                    ).value,
+                        document.getElementById(
+                            "editBio"
+                        ).value,
 
                     profpicurl
                 })
@@ -309,7 +355,7 @@ async function saveProfile(){
         const data =
             await response.json()
 
-        if(data.success){
+        if (data.success) {
 
             localStorage.setItem(
                 "user",
@@ -321,7 +367,7 @@ async function saveProfile(){
             )
 
             location.reload()
-        }else{
+        } else {
 
             alert(
                 data.message ||
@@ -329,7 +375,7 @@ async function saveProfile(){
             )
         }
 
-    }catch(error){
+    } catch (error) {
 
         console.log(error)
 
@@ -339,7 +385,7 @@ async function saveProfile(){
     }
 }
 
-function logout(){
+function logout() {
 
     localStorage.removeItem(
         "user"
@@ -349,10 +395,95 @@ function logout(){
         "login.html"
 }
 
-function goHome(){
+function goHome() {
 
     window.location.href =
         "home.html"
+}
+
+async function checkFollowStatus() {
+
+    try {
+
+        const response = await fetch(
+            API_BASE + "/check-follow",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    followerid: viewerId,
+                    followeeid: followeeid
+                })
+            }
+        )
+
+        const data = await response.json()
+
+        isFollowing = data.is_following
+
+        updateFollowButton()
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function updateFollowButton() {
+
+    const btn = document.getElementById("followBtn")
+
+    if (!btn) return
+
+    btn.innerText = isFollowing ? "Unfollow" : "Follow"
+    btn.className = "follow-btn"
+}
+
+async function toggleFollow() {
+
+    try {
+
+        if (isFollowing) {
+
+            await fetch(
+                API_BASE + "/unfollow-user",
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        followerid: viewerId,
+                        followeeid: followeeid
+                    })
+                }
+            )
+
+        } else {
+
+            await fetch(
+                API_BASE + "/follow-user",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        followerid: viewerId,
+                        followeeid: followeeid
+                    })
+                }
+            )
+        }
+
+        isFollowing = !isFollowing
+        updateFollowButton()
+        await loadUserPosts()
+
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 initProfile()

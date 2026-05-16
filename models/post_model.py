@@ -99,10 +99,17 @@ class PostModel:
                     FROM likes l
                     WHERE l.postid = p.postid
                     AND l.userid = %s
-                ) AS liked
+                ) AS liked,
+                EXISTS(
+                    SELECT 1
+                    FROM follower f
+                    WHERE f.followeeid = p.userid
+                    AND f.followerid = %s
+                ) AS is_following
             FROM posts p
             ORDER BY p.createdat DESC
         """,(
+            viewer_userid,
             viewer_userid,
         ))
 

@@ -509,6 +509,9 @@ async function loadPosts(){
             const liked =
                 Boolean(post.liked)
 
+            const isFollowing =
+                Boolean(post.is_following)
+
             feed.innerHTML += `
 
                 <div
@@ -520,7 +523,7 @@ async function loadPosts(){
 
                         <div class="avatar"></div>
 
-                        <div class="user-info">
+                        <div class="user-info" style="flex: 1;">
 
                             <h3>
                                 ${escapeHtml(post.fullname)}
@@ -529,8 +532,17 @@ async function loadPosts(){
                             <p>
                                 @${escapeHtml(post.username || "cooluser")}
                             </p>
-
                         </div>
+                        
+                        ${String(post.userid) === String(viewerId) ? "" : `
+                        <button
+                            class="follow-btn${isFollowing ? " following" : ""}"
+                            data-userid="${post.userid}"
+                            data-following="${isFollowing ? "1" : "0"}"
+                        >
+                           ${isFollowing ? "Following" : "Follow"}
+                        </button>
+                        `}
 
                     </div>
 
@@ -643,6 +655,21 @@ function bindPostCardEvents(card){
         card.querySelector(
             ".post-comment-btn"
         )
+
+    const followBtn =
+        card.querySelector(".follow-btn")
+
+    if (followBtn) {
+        followBtn.addEventListener(
+            "click",
+            function(){
+                toggleFollow(
+                    followBtn.dataset.userid,
+                    followBtn
+                )
+            }
+        )
+    }
 
     likeBtn.addEventListener(
         "click",
@@ -1390,5 +1417,68 @@ document.getElementById(
         }
     }
 )
+
+async function toggleFollow(userid, followBtn){
+
+    let following =
+        followBtn.dataset.following === "1"
+
+    followBtn.disabled = true
+
+    try{
+        const url = following
+            ? API_BASE + "/unfollow-user"
+            : API_BASE + "/follow-user"
+
+        const response =
+            await fetch(
+                url,
+                {
+                    method: following ? "DELETE" : "POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        followerid:viewerId,
+                        followeeid:userid
+                    })
+                }
+            )
+
+        const data =
+            await response.json()
+
+        if(!data.success){
+            alert(
+                data.message ||
+                "Could not update follow status"
+            )
+            return
+        }
+
+        following = !following
+
+        followBtn.dataset.following =
+            following ? "1" : "0"
+
+        followBtn.classList.toggle(
+            "following",
+            following
+        )
+
+        followBtn.innerText =
+            following
+                ? "Following"
+                : "Follow"
+
+    }catch(error){
+        console.log(error)
+        alert(
+            "Could not update follow status"
+        )
+    }finally{
+        followBtn.disabled = false
+    }
+}
 
 loadPosts()
