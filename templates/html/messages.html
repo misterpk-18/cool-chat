@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CoolChat Messages</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/messages.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">CoolChat</div>
+    <div class="nav-right">
+        <div id="welcomeText" class="welcome-text"></div>
+        <button class="nav-btn" onclick="goToProfile()">Profile</button>
+        <button class="nav-btn" onclick="goToHome()">Home</button>
+        <button class="nav-btn" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- MESSAGES LAYOUT -->
+<div class="messages-container">
+
+    <!-- LEFT PANEL: Conversation List -->
+    <div class="conversations-panel">
+
+        <div class="panel-header">
+            <span class="panel-title">Messages</span>
+            <button class="new-chat-btn" onclick="openNewChatModal()">＋</button>
+        </div>
+
+        <div id="conversationsList" class="conversations-list">
+            <div class="empty-state">No conversations yet</div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: Chat Window -->
+    <div class="chat-panel">
+
+        <!-- Default empty state -->
+        <div id="emptyChatState" class="empty-chat-state">
+            <div class="empty-chat-icon">💬</div>
+            <div class="empty-chat-text">Select a conversation to start chatting</div>
+        </div>
+
+        <!-- Chat window (hidden until conversation selected) -->
+        <div id="chatWindow" class="chat-window" style="display: none;">
+
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div id="chatName" class="chat-name"></div>
+                    <div id="chatMembers" class="chat-members"></div>
+                </div>
+                <div id="addMemberBtn" class="add-member-btn" onclick="openAddMemberModal()" style="display:none;">
+                    Add Member
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="messagesArea" class="messages-area"></div>
+
+            <!-- Typing Indicator -->
+            <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                <span id="typingText"></span>
+            </div>
+
+            <!-- Message Input -->
+            <div class="message-input-area">
+                <textarea
+                    id="messageInput"
+                    class="message-input"
+                    placeholder="Type a message..."
+                    rows="1"
+                    oninput="handleTyping()"
+                    onkeydown="handleKeyDown(event)"
+                ></textarea>
+                <button class="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- NEW CHAT MODAL -->
+<div id="newChatModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+
+        <div class="modal-header">
+            <span class="modal-title">New Conversation</span>
+            <button class="modal-close" onclick="closeNewChatModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+
+            <label class="modal-label">Type</label>
+            <div class="toggle-group">
+                <button id="dmBtn" class="toggle-btn active" onclick="selectType('dm')">Direct Message</button>
+                <button id="groupBtn" class="toggle-btn" onclick="selectType('group')">Group Chat</button>
+            </div>
+
+            <div id="groupNameField" style="display:none;">
+                <label class="modal-label">Group Name</label>
+                <input type="text" id="groupNameInput" class="modal-input" placeholder="Enter group name...">
+            </div>
+
+            <label class="modal-label">Add Users (comma separated usernames)</label>
+            <input type="text" id="memberIdsInput" class="modal-input" placeholder="e.g. john, jane">
+
+            <div id="modalMessage" class="modal-message"></div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="post-btn" onclick="createConversation()">Start Chat</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ADD MEMBER MODAL -->
+<div id="addMemberModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+
+        <div class="modal-header">
+            <span class="modal-title">Add Member</span>
+            <button class="modal-close" onclick="closeAddMemberModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <label class="modal-label">User ID</label>
+            <input type="text" id="addMemberInput" class="modal-input" placeholder="Enter user id...">
+            <div id="addMemberMessage" class="modal-message"></div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="post-btn" onclick="addMember()">Add</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="../js/messages.js"></script>
+
+</body>
+</html>
